@@ -2,7 +2,7 @@ import { db } from '../firebase.config';
 import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, query, where } from 'firebase/firestore';
 import { FirebaseError } from '../errors/FirebaseError';
 
-export interface Manual {
+export interface Model {
   id?: string;
   productId: string;
   modelName: string;
@@ -12,56 +12,56 @@ export interface Manual {
   releaseDate?: Date;
 }
 
-const COLLECTION_NAME = 'manuals';
+const COLLECTION_NAME = 'models';
 
-export const manualsAPI = {
-  getAll: async (): Promise<Manual[]> => {
+export const modelsAPI = {
+  getAll: async (): Promise<Model[]> => {
     try {
       const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
-      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Manual));
+      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Model));
     } catch (error) {
-      throw new FirebaseError('Failed to fetch manuals', 'FETCH_MANUALS_ERROR');
+      throw new FirebaseError('Failed to fetch models', 'FETCH_MODELS_ERROR');
     }
   },
 
-  getById: async (id: string): Promise<Manual | null> => {
+  getById: async (id: string): Promise<Model | null> => {
     try {
       const docRef = doc(db, COLLECTION_NAME, id);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
         return null;
       }
-      return { id: docSnap.id, ...docSnap.data() } as Manual;
+      return { id: docSnap.id, ...docSnap.data() } as Model;
     } catch (error) {
-      throw new FirebaseError(`Failed to fetch manual with id ${id}`, 'FETCH_MANUAL_ERROR');
+      throw new FirebaseError(`Failed to fetch models with id ${id}`, 'FETCH_MODEL_ERROR');
     }
   },
 
-  getByProductId: async (productId: string): Promise<Manual[]> => {
+  getByProductId: async (productId: string): Promise<Model[]> => {
     try {
       const q = query(collection(db, COLLECTION_NAME), where("productId", "==", productId));
       const querySnapshot = await getDocs(q);
-      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Manual));
+      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Model));
     } catch (error) {
-      throw new FirebaseError(`Failed to fetch manuals for product ${productId}`, 'FETCH_MANUALS_BY_PRODUCT_ERROR');
+      throw new FirebaseError(`Failed to fetch models for product ${productId}`, 'FETCH_MODELS_BY_PRODUCT_ERROR');
     }
   },
 
-  add: async (data: Omit<Manual, 'id'>): Promise<string> => {
+  add: async (data: Omit<Model, 'id'>): Promise<string> => {
     try {
       const docRef = await addDoc(collection(db, COLLECTION_NAME), data);
       return docRef.id;
     } catch (error) {
-      throw new FirebaseError('Failed to add manual', 'ADD_MANUAL_ERROR');
+      throw new FirebaseError('Failed to add models', 'ADD_MODEL_ERROR');
     }
   },
 
-  update: async (id: string, data: Partial<Manual>): Promise<void> => {
+  update: async (id: string, data: Partial<Model>): Promise<void> => {
     try {
       const docRef = doc(db, COLLECTION_NAME, id);
       await updateDoc(docRef, data);
     } catch (error) {
-      throw new FirebaseError(`Failed to update manual with id ${id}`, 'UPDATE_MANUAL_ERROR');
+      throw new FirebaseError(`Failed to update models with id ${id}`, 'UPDATE_MODEL_ERROR');
     }
   },
 
@@ -69,7 +69,7 @@ export const manualsAPI = {
     try {
       await deleteDoc(doc(db, COLLECTION_NAME, id));
     } catch (error) {
-      throw new FirebaseError(`Failed to delete manual with id ${id}`, 'DELETE_MANUAL_ERROR');
+      throw new FirebaseError(`Failed to delete models with id ${id}`, 'DELETE_MODEL_ERROR');
     }
   },
 };
