@@ -3,17 +3,23 @@
 import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '@/firebase/firebase.config';
-import AdminLogin from '@/components/AdminLogin/AdminLogin';
-import AdminNavbar from '@/components/ui/AdminNavbar';
+import AdminLogin from '@/components/Admin/AdminLogin/AdminLogin';
+import AdminSidebar from '@/components/Admin/AdminSidebar/AdminSidebar';
 import styles from './AdminLayout.module.scss';
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+interface AdminLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function AdminLayout({ children }: AdminLayoutProps) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, 
+    const unsubscribe = onAuthStateChanged(
+      auth,
       (user) => {
         setUser(user);
         setLoading(false);
@@ -24,8 +30,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       }
     );
 
-    return () => unsubscribe();
+    return unsubscribe;
   }, []);
+
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>Error: {error}</div>;
@@ -33,8 +41,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className={styles.adminLayout} dir="rtl">
-      <AdminNavbar />
-      <main className={styles.content}>{children}</main>
+      <AdminSidebar isOpen={sidebarOpen} onToggle={toggleSidebar} />
+      <div className={styles.mainContent}>
+        <main className={styles.content}>{children}</main>
+      </div>
     </div>
   );
 }

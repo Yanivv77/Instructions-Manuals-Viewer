@@ -1,9 +1,13 @@
+@import '@/styles/variables';
+
 .root {
   direction: rtl;
+  background-color: $background-color;
 }
 
 .main {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  
 }

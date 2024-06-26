@@ -12,8 +12,14 @@
   transition: all 0.3s ease;
 }
 
+@mixin responsive-mobile {
+  @media (max-width: $breakpoint-mobile) {
+    @content;
+  }
+}
+
 @mixin responsive-tablet {
-  @media (min-width: $breakpoint-tablet) {
+  @media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop-1px) {
     @content;
   }
 }
@@ -23,3 +29,5 @@
     @content;
   }
 }
+
+

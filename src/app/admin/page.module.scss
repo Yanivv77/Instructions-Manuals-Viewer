@@ -1,32 +1,31 @@
-@import '../../styles/globals';
+// AdminLayout.module.scss
+@import '../../styles/variables';
+@import '../../styles/mixins';
 
 .adminLayout {
   display: flex;
   min-height: 100vh;
-  background-color: $background-color;
+  direction: rtl;
   
+}
 
+.content {
+  flex-grow: 1;
+  padding: $spacing-large;
+  overflow-y: auto;
+}
 
-  .content {
-    flex-grow: 1;
-    padding: $spacing-large;
-    overflow-y: auto;
-  }
+.loading,
+.error {
+  @include flex-center;
+  height: 100vh;
+  font-size: $font-size-large;
 }
 
 .loading {
-  @include flex-center;
-  height: 50vh;
-  font-size: $font-size-large;
   color: $primary-color;
 }
 
-.dashboard {
-  h1 {
-    color: $primary-color;
-    margin-bottom: $spacing-large;
-    font-size: $font-size-h1;
-    font-weight: bold;
-    text-align: right;
-  }
+.error {
+  color: $error-color;
 }

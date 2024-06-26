@@ -9,7 +9,7 @@
   background-color: $primary-color;
   z-index: 1000;
   transition: transform 0.3s ease;
-  width: 250px;
+  width: 220px;
   transform: translateX(100%);
   display: flex;
   flex-direction: column;
@@ -52,21 +52,22 @@
 }
 
 .navContent {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Aligns children to start and end respectively */
-  height: 100%;
-  padding-top: 50px; 
+  flex-grow: 1;
+  padding-top: 60px; // To account for the toggle button
+  overflow-y: auto;
+  
+  @include responsive-desktop  {
+    padding-top: 20px; // More reasonable padding for mobile, adjust as needed
+  }
 }
 
 .navList {
   list-style-type: none;
   padding: 0;
   margin: 0;
-  flex-grow: 1; /* Takes all available space pushing logout button to the bottom */
 
   li {
-    padding: 15px 20px 10px 0;
+    padding: 15px 20px;
     border-bottom: 1px solid rgba($light-text-color, 0.1);
 
     &:last-child {
@@ -88,14 +89,16 @@
 
 .logoutButton {
   padding: 15px 20px;
-  cursor: pointer;
-  text-align: right;
-  background: none;
+  background-color: darken($primary-color, 10%);
+  color: $light-text-color;
   border: none;
-  color: $light-text-color; /* Assuming you want the logout button to match the link colors */
+  width: 100%;
+  text-align: right;
   font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 
   &:hover {
-    color: $error-color; /* Optional: Change color on hover to indicate a different action */
+    background-color: darken($primary-color, 15%);
   }
 }

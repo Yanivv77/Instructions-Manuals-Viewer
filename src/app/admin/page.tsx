@@ -8,8 +8,8 @@ export default function AdminPage() {
   return (
     <AdminLayout>
       <div className={styles.dashboard}>
-        <h1>hello</h1>
-        {/* Add dashboard content here */}
+        
+        
       </div>
     </AdminLayout>
   );
