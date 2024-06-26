@@ -1,19 +1,25 @@
-// AdminLayout.module.scss
 @import '../../styles/variables';
 @import '../../styles/mixins';
 
 .adminLayout {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  direction: rtl;
-  
 }
 
-.content {
+
+
+.mainContent {
   flex-grow: 1;
-  padding: $spacing-large;
+  transition: margin-left 0.3s ease; 
   overflow-y: auto;
+
+  @include responsive-desktop {
+    margin-left: 220px; 
+  }
 }
+
+
 
 .loading,
 .error {
