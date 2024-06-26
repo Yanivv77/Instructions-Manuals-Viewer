@@ -1,5 +1,25 @@
-@mixin mobile {
-  @media (max-width: $breakpoint-mobile) {
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin box-shadow($shadow: 0 2px 4px rgba(0, 0, 0, 0.1)) {
+  box-shadow: $shadow;
+}
+
+@mixin transition {
+  transition: all 0.3s ease;
+}
+
+@mixin responsive-tablet {
+  @media (min-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin responsive-desktop {
+  @media (min-width: $breakpoint-desktop) {
     @content;
   }
 }

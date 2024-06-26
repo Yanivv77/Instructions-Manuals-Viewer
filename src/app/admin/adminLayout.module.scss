@@ -1,0 +1,28 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.adminLayout {
+  display: flex;
+  min-height: 100vh;
+  direction: rtl;
+
+  .content {
+    flex-grow: 1;
+    padding: $spacing-large;
+    overflow-y: auto;
+  }
+}
+
+.loading {
+  @include flex-center;
+  height: 100vh;
+  font-size: $font-size-large;
+  color: $primary-color;
+}
+
+.error {
+  @include flex-center;
+  height: 100vh;
+  font-size: $font-size-large;
+  color: red;
+}

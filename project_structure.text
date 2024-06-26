@@ -1,0 +1,72 @@
+- .env.local
+- .gitignore
+- jest.config.js
+- LICENSE
+- next-env.d.ts
+- next.config.js
+- package-lock.json
+- package.json
+- project_structure.text
+- public
+  - favicon.ico
+  - next.svg
+  - vercel.svg
+- README.md
+- src
+  - app
+    - admin
+      - adminLayout.module.scss
+      - adminLayout.tsx
+      - brands
+        - page.tsx
+      - importers
+        - page.tsx
+      - manuals
+        - page.tsx
+      - page.module.scss
+      - page.tsx
+      - products
+        - page.tsx
+    - layout.tsx
+    - page.tsx
+    - [importer_id]
+      - page.tsx
+      - [brand_id]
+        - page.tsx
+        - [product_id]
+          - page.tsx
+          - [model_id]
+            - page.tsx
+  - components
+    - AdminLogin
+      - AdminLogin.module.scss
+      - AdminLogin.tsx
+    - ui
+      - AdminNavbar.tsx
+  - firebase
+    - collections
+      - brands.ts
+      - importers.ts
+      - index.ts
+      - models.ts
+      - products.ts
+      - __tests__
+        - brands.test.ts
+        - importers.test.ts
+        - models.test.ts
+        - products.test.ts
+    - errors
+      - FirebaseError.ts
+    - firebase.config.ts
+  - lib
+    - auth.ts
+    - __tests__
+      - auth.test.ts
+  - styles
+    - globals.scss
+    - _mixins.scss
+    - _typography.scss
+    - _variables.scss
+  - types
+    - index.ts
+- tsconfig.json

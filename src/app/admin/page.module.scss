@@ -1,0 +1,32 @@
+@import '../../styles/globals';
+
+.adminLayout {
+  display: flex;
+  min-height: 100vh;
+  background-color: $background-color;
+  
+
+
+  .content {
+    flex-grow: 1;
+    padding: $spacing-large;
+    overflow-y: auto;
+  }
+}
+
+.loading {
+  @include flex-center;
+  height: 50vh;
+  font-size: $font-size-large;
+  color: $primary-color;
+}
+
+.dashboard {
+  h1 {
+    color: $primary-color;
+    margin-bottom: $spacing-large;
+    font-size: $font-size-h1;
+    font-weight: bold;
+    text-align: right;
+  }
+}
