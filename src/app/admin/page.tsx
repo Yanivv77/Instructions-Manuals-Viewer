@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import AdminLayout from './layout';
 import styles from './page.module.scss';
 
 export default function AdminPage() {
@@ -14,10 +13,10 @@ export default function AdminPage() {
         <h2 className={styles.sectionTitle}>המרכיבים העיקריים:</h2>
         <div className={styles.componentGrid}>
           {[
-            { title: 'יבואנים (Importers)', description: 'ניהול יבואנים עם שם כתובת  ולוגו .' },
-            { title: 'מותגים (Brands)', description: 'ניהול מותגים המשויכים ליבואנים ספציפיים.' },
-            { title: 'מוצרים (Products)', description: 'ניהול מוצרים המשויכים למותגים ספציפיים.' },
-            { title: 'הוראות הפעלה (Manuals)', description: 'ניהול הוראות הפעלה המקושרות למוצרים ספציפיים.' },
+            { title: 'יבואנים ', description: 'ניהול יבואנים עם שם כתובת  ולוגו .' },
+            { title: 'מותגים ', description: 'ניהול מותגים המשויכים ליבואנים ספציפיים.' },
+            { title: 'מוצרים ', description: 'ניהול מוצרים המשויכים למותגים ספציפיים.' },
+            { title: 'הוראות הפעלה ', description: 'ניהול הוראות הפעלה המקושרות למוצרים ספציפיים.' },
           ].map((component, index) => (
             <div key={index} className={styles.componentCard}>
               <h3 className={styles.componentTitle}>{component.title}</h3>

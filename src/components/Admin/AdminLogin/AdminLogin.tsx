@@ -12,7 +12,7 @@ const AdminLogin: React.FC = () => {
     try {
       await loginUser(email, password);
       console.log('Logged in successfully');
-      // Redirect to admin dashboard or refresh the page
+      
     } catch (err) {
       setError('כניסה נכלשה תבדוק את הפרטים שהזנת ונסה שוב');
     }

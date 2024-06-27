@@ -65,7 +65,7 @@
   margin-bottom: $spacing-medium;
 }
 
-// Responsive adjustments
+
 @include responsive-tablet {
   .loginForm {
     padding: $spacing-large * 1.5;

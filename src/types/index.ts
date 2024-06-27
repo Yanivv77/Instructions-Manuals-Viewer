@@ -1,7 +1,7 @@
 export type FormField<T> = {
   name: keyof T;
   label: string;
-  type: 'text' | 'number' | 'email' | 'url' | 'textarea' | 'date' | 'select';
+  type: 'text' | 'number' | 'email' | 'url' | 'textarea' | 'date' | 'select'| 'pdfUpload';
   placeholder?: string;
   required?: boolean;
   options?: { value: string; label: string }[];
@@ -28,9 +28,8 @@ export interface Product {
 }
 
 export interface Manual {
-  productName: string;
+  
   id?: string;
-  productId: string;
   name: string;
   imageUrl?: string;
   manualPdfFile: string;

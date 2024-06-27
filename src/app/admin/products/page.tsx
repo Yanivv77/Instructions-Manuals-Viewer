@@ -25,24 +25,24 @@ const ProductsPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadProducts();
     loadImporters();
   }, []);
 
   useEffect(() => {
     if (selectedImporter) {
       loadBrands(selectedImporter);
+      setSelectedBrand('');
+      setProducts([]);
     }
   }, [selectedImporter]);
 
-  const loadProducts = async () => {
-    try {
-      const loadedProducts = await productsAPI.getAll();
-      setProducts(loadedProducts);
-    } catch (err) {
-      setError('בעיה בטעינת מוצרים');
+  useEffect(() => {
+    if (selectedBrand) {
+      loadProducts(selectedBrand);
+    } else {
+      setProducts([]);
     }
-  };
+  }, [selectedBrand]);
 
   const loadImporters = async () => {
     try {
@@ -62,11 +62,24 @@ const ProductsPage: React.FC = () => {
     }
   };
 
-  const handleAddProduct = async () => {
+  const loadProducts = async (brandId: string) => {
     try {
-      await productsAPI.add(newProduct);
+      const loadedProducts = await productsAPI.getByBrandId(brandId);
+      setProducts(loadedProducts);
+    } catch (err) {
+      setError('בעיה בטעינת מוצרים');
+    }
+  };
+
+  const handleAddProduct = async () => {
+    if (!selectedBrand) {
+      setError('יש לבחור מותג לפני הוספת מוצר');
+      return;
+    }
+    try {
+      await productsAPI.add({ ...newProduct, brandId: selectedBrand });
       setNewProduct({ name: '', brandId: '' });
-      loadProducts();
+      loadProducts(selectedBrand);
     } catch (err) {
       setError('בעיה בהוספת מוצר');
     }
@@ -77,7 +90,7 @@ const ProductsPage: React.FC = () => {
       try {
         await productsAPI.update(editingProduct.id, editingProduct);
         setEditingProduct(null);
-        loadProducts();
+        loadProducts(selectedBrand);
       } catch (err) {
         setError('בעיה בעדכון מוצר');
       }
@@ -87,7 +100,7 @@ const ProductsPage: React.FC = () => {
   const handleDeleteProduct = async (id: string) => {
     try {
       await productsAPI.delete(id);
-      loadProducts();
+      loadProducts(selectedBrand);
     } catch (err) {
       setError('בעיה במחיקת מוצר');
     }
@@ -102,11 +115,7 @@ const ProductsPage: React.FC = () => {
         <div className={styles.selectionContainer}>
           <select
             value={selectedImporter}
-            onChange={(e) => {
-              setSelectedImporter(e.target.value);
-              setSelectedBrand('');
-              setNewProduct({ ...newProduct, brandId: '' });
-            }}
+            onChange={(e) => setSelectedImporter(e.target.value)}
           >
             <option value="">בחר יבואן</option>
             {importers.map((importer) => (
@@ -116,10 +125,7 @@ const ProductsPage: React.FC = () => {
 
           <select
             value={selectedBrand}
-            onChange={(e) => {
-              setSelectedBrand(e.target.value);
-              setNewProduct({ ...newProduct, brandId: e.target.value });
-            }}
+            onChange={(e) => setSelectedBrand(e.target.value)}
             disabled={!selectedImporter}
           >
             <option value="">בחר מותג</option>
@@ -129,36 +135,40 @@ const ProductsPage: React.FC = () => {
           </select>
         </div>
 
-        <GenericForm<Omit<Product, 'id'>>
-          fields={productFields}
-          values={newProduct}
-          onChange={(field, value) => setNewProduct({...newProduct, [field]: value})}
-          onSubmit={handleAddProduct}
-          buttonText="הוסף מוצר"
-        />
+        {selectedBrand && (
+          <>
+            <GenericForm<Omit<Product, 'id'>>
+              fields={productFields}
+              values={newProduct}
+              onChange={(field, value) => setNewProduct({...newProduct, [field]: value})}
+              onSubmit={handleAddProduct}
+              buttonText="הוסף מוצר"
+            />
 
-<h2>רשימת מוצרים</h2>
-        <ul className={styles.List}>
-          {products.map((product) => (
-            <li key={product.id}>
-              {editingProduct?.id === product.id ? (
-                <GenericForm<Product>
-                  fields={productFields}
-                  values={editingProduct}
-                  onChange={(field, value) => setEditingProduct({...editingProduct, [field]: value})}
-                  onSubmit={handleUpdateProduct}
-                  buttonText="שמור"
-                />
-              ) : (
-                <>
-                  <span>{product.name}</span>
-                  <button onClick={() => setEditingProduct(product)}>ערוך</button>
-                  <button onClick={() => product.id && handleDeleteProduct(product.id)}>מחק</button>
-                </>
-              )}
-            </li>
-          ))}
-        </ul>
+            <h2>רשימת מוצרים</h2>
+            <ul className={styles.List}>
+              {products.map((product) => (
+                <li key={product.id}>
+                  {editingProduct?.id === product.id ? (
+                    <GenericForm<Product>
+                      fields={productFields}
+                      values={editingProduct}
+                      onChange={(field, value) => setEditingProduct({...editingProduct, [field]: value})}
+                      onSubmit={handleUpdateProduct}
+                      buttonText="שמור"
+                    />
+                  ) : (
+                    <>
+                      <span>{product.name}</span>
+                      <button onClick={() => setEditingProduct(product)}>ערוך</button>
+                      <button onClick={() => product.id && handleDeleteProduct(product.id)}>מחק</button>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </div>
     </>
   );

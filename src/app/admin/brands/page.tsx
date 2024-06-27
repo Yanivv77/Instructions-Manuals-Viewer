@@ -22,18 +22,16 @@ const BrandsPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadBrands();
     loadImporters();
   }, []);
 
-  const loadBrands = async () => {
-    try {
-      const loadedBrands = await brandsAPI.getAll();
-      setBrands(loadedBrands);
-    } catch (err) {
-      setError('בעיה בטעינת מותגים');
+  useEffect(() => {
+    if (selectedImporter) {
+      loadBrands(selectedImporter);
+    } else {
+      setBrands([]);
     }
-  };
+  }, [selectedImporter]);
 
   const loadImporters = async () => {
     try {
@@ -44,12 +42,24 @@ const BrandsPage: React.FC = () => {
     }
   };
 
-  const handleAddBrand = async () => {
+  const loadBrands = async (importerId: string) => {
     try {
-      await brandsAPI.add(newBrand);
+      const loadedBrands = await brandsAPI.getByImporterId(importerId);
+      setBrands(loadedBrands);
+    } catch (err) {
+      setError('בעיה בטעינת מותגים');
+    }
+  };
+
+  const handleAddBrand = async () => {
+    if (!selectedImporter) {
+      setError('יש לבחור יבואן לפני הוספת מותג');
+      return;
+    }
+    try {
+      await brandsAPI.add({ ...newBrand, importerId: selectedImporter });
       setNewBrand({ name: '', importerId: '' });
-      setSelectedImporter('');
-      loadBrands();
+      loadBrands(selectedImporter);
     } catch (err) {
       setError('בעיה בהוספת מותג');
     }
@@ -60,7 +70,7 @@ const BrandsPage: React.FC = () => {
       try {
         await brandsAPI.update(editingBrand.id, editingBrand);
         setEditingBrand(null);
-        loadBrands();
+        loadBrands(selectedImporter);
       } catch (err) {
         setError('בעיה בעדכון מותג');
       }
@@ -70,7 +80,7 @@ const BrandsPage: React.FC = () => {
   const handleDeleteBrand = async (id: string) => {
     try {
       await brandsAPI.delete(id);
-      loadBrands();
+      loadBrands(selectedImporter);
     } catch (err) {
       setError('בעיה במחיקת מותג');
     }
@@ -85,10 +95,7 @@ const BrandsPage: React.FC = () => {
         <div className={styles.selectionContainer}>
           <select
             value={selectedImporter}
-            onChange={(e) => {
-              setSelectedImporter(e.target.value);
-              setNewBrand({ ...newBrand, importerId: e.target.value });
-            }}
+            onChange={(e) => setSelectedImporter(e.target.value)}
           >
             <option value="">בחר יבואן</option>
             {importers.map((importer) => (
@@ -97,46 +104,40 @@ const BrandsPage: React.FC = () => {
           </select>
         </div>
 
-        
-          <GenericForm<Omit<Brand, 'id'>>
-            fields={brandFields}
-            values={newBrand}
-            onChange={(field, value) => setNewBrand({...newBrand, [field]: value})}
-            onSubmit={handleAddBrand}
-            buttonText="הוסף מותג"
-          />
-        
-        <h2>רשימת מותגים</h2>
-        <ul className={styles.List}>
-          {brands.map((brand) => (
-            <li key={brand.id}>
-              {editingBrand?.id === brand.id ? (
-                <GenericForm<Brand>
-                  fields={[
-                    ...brandFields,
-                    {
-                      name: 'importerId',
-                      label: 'יבואן',
-                      type: 'select',
-                      options: importers.map(importer => ({ value: importer.id!, label: importer.name })),
-                      required: true,
-                    },
-                  ]}
-                  values={editingBrand}
-                  onChange={(field, value) => setEditingBrand({...editingBrand, [field]: value})}
-                  onSubmit={handleUpdateBrand}
-                  buttonText="שמור"
-                />
-              ) : (
-                <>
-                  <span>{brand.name}</span>
-                  <button onClick={() => setEditingBrand(brand)}>ערוך</button>
-                  <button onClick={() => brand.id && handleDeleteBrand(brand.id)}>מחק</button>
-                </>
-              )}
-            </li>
-          ))}
-        </ul>
+        {selectedImporter && (
+          <>
+            <GenericForm<Omit<Brand, 'id'>>
+              fields={brandFields}
+              values={newBrand}
+              onChange={(field, value) => setNewBrand({...newBrand, [field]: value})}
+              onSubmit={handleAddBrand}
+              buttonText="הוסף מותג"
+            />
+          
+            <h2>רשימת מותגים</h2>
+            <ul className={styles.List}>
+              {brands.map((brand) => (
+                <li key={brand.id}>
+                  {editingBrand?.id === brand.id ? (
+                    <GenericForm<Brand>
+                      fields={brandFields}
+                      values={editingBrand}
+                      onChange={(field, value) => setEditingBrand({...editingBrand, [field]: value})}
+                      onSubmit={handleUpdateBrand}
+                      buttonText="שמור"
+                    />
+                  ) : (
+                    <>
+                      <span>{brand.name}</span>
+                      <button onClick={() => setEditingBrand(brand)}>ערוך</button>
+                      <button onClick={() => brand.id && handleDeleteBrand(brand.id)}>מחק</button>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </div>
     </>
   );

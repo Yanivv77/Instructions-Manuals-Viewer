@@ -21,7 +21,7 @@
 }
 
 .menuToggle {
-  position: fixed; // Ensure position is defined
+  position: fixed; 
   top: 10px;
   right: 10px;
   z-index: 1001;
@@ -44,13 +44,13 @@
   }
 
   @include responsive-desktop {
-    display: none; // Hide toggle button on desktop
+    display: none; 
   }
 }
 
 .navContent {
   flex-grow: 1;
-  padding-top: 60px; // Consistent padding, no need to change it on desktop if it's already reasonable
+  padding-top: 60px; 
   overflow-y: auto;
 }
 
