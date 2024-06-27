@@ -1,4 +1,5 @@
 import React from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/firebase/firebase.config';
@@ -10,10 +11,12 @@ interface AdminSidebarProps {
 }
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen, onToggle }) => {
+  const pathname = usePathname();
+  console.log(pathname);
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      // Redirect or handle successful logout here if needed
     } catch (error) {
       console.error('Logout failed', error);
     }
@@ -22,18 +25,26 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen, onToggle }) => {
   return (
     <>
       <button className={styles.menuToggle} onClick={onToggle} aria-label="Toggle menu">
-        <span></span>
-        <span></span>
-        <span></span>
+  
       </button>
       <nav className={`${styles.AdminSidebar} ${isOpen ? styles.open : ''}`}>
         <div className={styles.navContent}>
           <ul className={styles.navList}>
-            <li><Link href="/">עמוד בית</Link></li>
-            <li><Link href="/importers">הוספת יבואנים</Link></li>
-            <li><Link href="/brands">הוספת מותגים</Link></li>
-            <li><Link href="/products">הוספת מוצרים</Link></li>
-            <li><Link href="/manuals">הוספת הוראות הפעלה</Link></li>
+            <li className={pathname === '/admin' ? styles.active : ''}>
+              <Link href="/admin">עמוד בית</Link>
+            </li>
+            <li className={pathname === '/admin/importers' ? styles.active : ''}>
+              <Link href="/admin/importers">יבואנים</Link>
+            </li>
+            <li className={pathname === '/admin/brands' ? styles.active : ''}>
+              <Link href="/admin/brands">מותגים</Link>
+            </li>
+            <li className={pathname === '/admin/products' ? styles.active : ''}>
+              <Link href="/admin/products">מוצרים</Link>
+            </li>
+            <li className={pathname === '/admin/manuals' ? styles.active : ''}>
+              <Link href="/admin/manuals">הוראות הפעלה</Link>
+            </li>
           </ul>
         </div>
         <button className={styles.logoutButton} onClick={handleLogout}>

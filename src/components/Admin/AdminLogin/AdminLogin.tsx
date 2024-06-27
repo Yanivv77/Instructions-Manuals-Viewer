@@ -14,7 +14,7 @@ const AdminLogin: React.FC = () => {
       console.log('Logged in successfully');
       // Redirect to admin dashboard or refresh the page
     } catch (err) {
-      setError('Failed to login. Please check your credentials.');
+      setError('כניסה נכלשה תבדוק את הפרטים שהזנת ונסה שוב');
     }
   };
 
@@ -22,7 +22,7 @@ const AdminLogin: React.FC = () => {
     <div className={styles.loginContainer}>
       <form onSubmit={handleSubmit} className={styles.loginForm}>
         <h2>כניסת מנהל</h2>
-        {error && <p className={styles.error}>{error}</p>}
+       
         <input
           type="email"
           value={email}
@@ -38,6 +38,7 @@ const AdminLogin: React.FC = () => {
           required
         />
         <button type="submit">כניסה</button>
+        {error && <p className={styles.error}>{error}</p>}
       </form>
     </div>
   );

@@ -3,29 +3,36 @@
 
 .adminLayout {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; // Vertical stacking of header and the rest of the content
   min-height: 100vh;
-  direction: rtl;
+  width: 100%;
+}
+
+.header {
+  height: 60px; // Fixed height for the header
+  background-color: #f4f4f4; // Example background color
+  z-index: 1; 
 }
 
 .contentWrapper {
   display: flex;
-  flex-grow: 1;
-  padding-top: 60px; 
+  flex-grow: 1; // Fills the remaining vertical space after the header
 }
 
-.mainContent {
-  flex-grow: 1;
-  transition: margin-right 0.3s ease;
-  overflow-y: auto;
-
-  @include responsive-desktop {
-    margin-right: 250px; 
-  }
+.sidebarWrapper {
+  background-color: #ddd; // Example background color
+ 
 }
 
 .content {
-  padding: $spacing-large;
+  flex-grow: 1;
+  background-color: #fff;
+  padding: 20px;
+  overflow-y: auto;
+
+  @media (max-width: $breakpoint-desktop) { 
+    margin-right: -220px;
+  }
 }
 
 .loading,

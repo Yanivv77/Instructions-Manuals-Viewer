@@ -1,0 +1,79 @@
+.Container {
+  padding: 10px;
+  max-width: 500px;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.selectionContainer {
+  margin-bottom: 20px;
+
+  select {
+    flex: 1;
+    padding: 5px;
+    margin-left: 15px;
+    font-size: 16px;
+  }
+}
+
+.addForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  input {
+    padding: 5px;
+  }
+
+  button {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+}
+
+.List {
+  list-style-type: none;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+
+    input {
+      padding: 5px;
+    }
+
+    button {
+      padding: 5px 10px;
+      background-color: #008CBA;
+      color: white;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #007B9A;
+      }
+
+      &:last-child {
+        background-color: #f44336;
+
+        &:hover {
+          background-color: #da190b;
+        }
+      }
+    }
+  }
+}

@@ -2,10 +2,7 @@
 @import '@/styles/mixins';
 
 .AdminSidebar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100vh;
+  height: calc(100vh - 60px);
   background-color: $primary-color;
   z-index: 1000;
   transition: transform 0.3s ease;
@@ -24,7 +21,7 @@
 }
 
 .menuToggle {
-  position: fixed;
+  position: fixed; // Ensure position is defined
   top: 10px;
   right: 10px;
   z-index: 1001;
@@ -47,18 +44,14 @@
   }
 
   @include responsive-desktop {
-    display: none;
+    display: none; // Hide toggle button on desktop
   }
 }
 
 .navContent {
   flex-grow: 1;
-  padding-top: 60px; // To account for the toggle button
+  padding-top: 60px; // Consistent padding, no need to change it on desktop if it's already reasonable
   overflow-y: auto;
-  
-  @include responsive-desktop  {
-    padding-top: 20px; // More reasonable padding for mobile, adjust as needed
-  }
 }
 
 .navList {

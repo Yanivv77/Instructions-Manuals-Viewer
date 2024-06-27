@@ -1,5 +1,6 @@
 - .env.local
 - .gitignore
+- addAdminUser.js
 - jest.config.js
 - LICENSE
 - next-env.d.ts
@@ -19,6 +20,7 @@
       - adminLayout.tsx
       - brands
         - page.tsx
+      - form.module.scss
       - importers
         - page.tsx
       - manuals
@@ -27,6 +29,7 @@
       - page.tsx
       - products
         - page.tsx
+    - layout.module.scss
     - layout.tsx
     - page.tsx
     - [importer_id]
@@ -38,9 +41,20 @@
           - [model_id]
             - page.tsx
   - components
-    - AdminLogin
-      - AdminLogin.module.scss
-      - AdminLogin.tsx
+    - Admin
+      - AdminLogin
+        - AdminLogin.module.scss
+        - AdminLogin.tsx
+      - AdminSidebar
+        - AdminSidebar.module.scss
+        - AdminSidebar.tsx
+      - GenericForm
+        - GenericForm.module.scss
+        - GenericForm.tsx
+    - Client
+    - Shared
+      - Header.module.scss
+      - Header.tsx
     - ui
       - AdminNavbar.tsx
   - firebase
@@ -48,12 +62,12 @@
       - brands.ts
       - importers.ts
       - index.ts
-      - models.ts
+      - manuals.ts
       - products.ts
       - __tests__
         - brands.test.ts
         - importers.test.ts
-        - models.test.ts
+        - manuals.test.ts
         - products.test.ts
     - errors
       - FirebaseError.ts
@@ -63,9 +77,9 @@
     - __tests__
       - auth.test.ts
   - styles
+    - globals.css
     - globals.scss
     - _mixins.scss
-    - _typography.scss
     - _variables.scss
   - types
     - index.ts
