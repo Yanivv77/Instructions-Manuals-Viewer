@@ -1,0 +1,51 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.adminLayout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.header {
+  height: 60px; 
+  background-color: #f4f4f4; 
+  z-index: 1; 
+}
+
+.contentWrapper {
+  display: flex;
+  flex-grow: 1; 
+}
+
+.sidebarWrapper {
+  background-color: #ddd; 
+ 
+}
+
+.content {
+  flex-grow: 1;
+  background-color: #fff;
+  padding: 20px;
+  overflow-y: auto;
+
+  @media (max-width: $breakpoint-desktop) { 
+    margin-right: -220px;
+  }
+}
+
+.loading,
+.error {
+  @include flex-center;
+  height: 100vh;
+  font-size: $font-size-large;
+}
+
+.loading {
+  color: $primary-color;
+}
+
+.error {
+  color: $error-color;
+}

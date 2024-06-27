@@ -1,10 +1,15 @@
-// src/types/index.ts
+export type FormField<T> = {
+  name: keyof T;
+  label: string;
+  type: 'text' | 'number' | 'email' | 'url' | 'textarea' | 'date' | 'select'| 'pdfUpload';
+  placeholder?: string;
+  required?: boolean;
+  options?: { value: string; label: string }[];
+};
 
 export interface Importer {
   id?: string;
   name: string;
-  description?: string;
-  website?: string;
   logoUrl?: string;
 }
 
@@ -12,8 +17,6 @@ export interface Brand {
   id?: string;
   importerId: string;
   name: string;
-  description?: string;
-  website?: string;
   logoUrl?: string;
 }
 
@@ -21,17 +24,13 @@ export interface Product {
   id?: string;
   brandId: string;
   name: string;
-  description?: string;
   imageUrl?: string;
-  category?: string;
 }
 
-export interface Model {
+export interface Manual {
+  
   id?: string;
-  productId: string;
   name: string;
-  description?: string;
   imageUrl?: string;
-  manualUrl: string;
-  releaseDate?: Date;
+  manualPdfFile: string;
 }

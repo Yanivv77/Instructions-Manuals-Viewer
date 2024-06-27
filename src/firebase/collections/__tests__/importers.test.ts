@@ -1,7 +1,6 @@
 import { importersAPI } from '../importers';
 import { FirebaseError } from '../../errors/FirebaseError';
 
-// Mock the Firebase modules
 jest.mock('../../firebase.config', () => ({
   db: {},
 }));

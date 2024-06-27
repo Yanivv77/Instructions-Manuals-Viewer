@@ -1,0 +1,79 @@
+@import '@/styles/globals';
+
+.loginContainer {
+  @include flex-center;
+  min-height: 65vh;
+}
+
+.loginForm {
+  width: 100%;
+  max-width: 360px;
+  padding: $spacing-large;
+  background-color: $light-text-color;
+  border-radius: 8px;
+  @include box-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  @include transition;
+
+  h2 {
+    text-align: center;
+    color: $primary-color;
+  }
+
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 16px 5px;
+    margin-bottom: $spacing-medium;
+    border: 1px solid $secondary-color;
+    border-radius: 4px;
+    font-size: $font-size-large;
+   
+
+    @include transition;
+
+    &:focus {
+      border-color: darken($secondary-color, 10%);
+      outline: none;
+    }
+
+    &:not(:placeholder-shown) {
+      direction: ltr;
+    }
+  }
+
+  button {
+    width: 100%;
+    min-width: 371px;
+    padding: $spacing-medium;
+    font-size: $font-size-large;
+    color: $light-text-color;
+    background-color: $primary-color;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    @include transition;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+}
+
+.error {
+  color: $error-color;
+  text-align: center;
+  margin-bottom: $spacing-medium;
+}
+
+
+@include responsive-tablet {
+  .loginForm {
+    padding: $spacing-large * 1.5;
+  }
+}
+
+@include responsive-desktop {
+  .loginForm {
+    padding: $spacing-large * 2;
+  }
+}

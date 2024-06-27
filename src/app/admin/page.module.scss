@@ -1,0 +1,58 @@
+
+.dashboard {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  direction: rtl;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.8rem;
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+
+.componentGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.componentCard {
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.componentTitle {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.componentDescription {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.4;
+}
