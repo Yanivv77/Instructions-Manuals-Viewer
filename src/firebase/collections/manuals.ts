@@ -1,4 +1,3 @@
-
 import { db } from '../firebase.config';
 import {
   collection,
@@ -10,7 +9,8 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { FirebaseError } from '../errors/FirebaseError';
-import { Manual } from '@/types';
+import { Manual, Product } from '@/types'; 
+import { productsAPI } from './products'; 
 
 export const manualsAPI = {
   getByProductId: async (productId: string): Promise<Manual[]> => {
@@ -26,10 +26,20 @@ export const manualsAPI = {
     }
   },
 
-  add: async (productId: string, data: Omit<Manual, 'id'>): Promise<string> => {
+  add: async (productId: string, data: Omit<Manual, 'id' | 'createdAt' | 'productName'>): Promise<string> => {
     try {
+     
+      const product = await productsAPI.getById(productId);
+      if (!product) {
+        throw new FirebaseError('Product not found', 'PRODUCT_NOT_FOUND');
+      }
+
       const manualsCollectionRef = collection(db, 'products', productId, 'manuals');
-      const docRef = await addDoc(manualsCollectionRef, data);
+      const docRef = await addDoc(manualsCollectionRef, { 
+        ...data,
+        productName: product.name, 
+        createdAt: new Date(), 
+      });
       return docRef.id;
     } catch (error) {
       throw new FirebaseError('Failed to add manual', 'ADD_MANUAL_ERROR');

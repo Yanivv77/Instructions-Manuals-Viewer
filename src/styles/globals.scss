@@ -2,3 +2,7 @@
 @import './mixins';
 
 
+
+.center {
+  @include flex-center;
+}

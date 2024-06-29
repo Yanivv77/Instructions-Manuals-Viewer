@@ -12,7 +12,7 @@ interface AdminSidebarProps {
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen, onToggle }) => {
   const pathname = usePathname();
-  console.log(pathname);
+ 
 
   const handleLogout = async () => {
     try {

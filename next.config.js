@@ -4,9 +4,12 @@
 const path = require('path')
  
 const nextConfig = {
-    sassOptions: {
-      includePaths: [path.join(__dirname, 'styles')],
-    },
-}
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'styles')],
+  },
+  images: {
+    domains: ['picsum.photos','images.unsplash.com','images.pexels.com'], 
+  },
+};
  
 module.exports = nextConfig

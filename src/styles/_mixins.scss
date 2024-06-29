@@ -4,6 +4,7 @@
   align-items: center;
 }
 
+
 @mixin box-shadow($shadow: 0 2px 4px rgba(0, 0, 0, 0.1)) {
   box-shadow: $shadow;
 }

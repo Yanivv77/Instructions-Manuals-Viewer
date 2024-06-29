@@ -1,7 +1,7 @@
 require('dotenv').config({ path: '.env.local' });
 const admin = require('firebase-admin');
-const fs = require('fs'); 
-
+const fs = require('fs');
+const fetch = require('node-fetch'); 
 
 admin.initializeApp({
   credential: admin.credential.cert({
@@ -14,12 +14,34 @@ admin.initializeApp({
 
 const db = admin.firestore();
 const storage = admin.storage();
+const pexelsApiKey = process.env.PEXELS_API_KEY;
 
+async function getRandomImageUrl(query = 'product', width = 250, height = 250) {
+  try {
+    const response = await fetch(`https://api.pexels.com/v1/search?query=${query}&per_page=1`, {
+      headers: {
+        'Authorization': `${pexelsApiKey}`
+      }
+    });
 
-function getRandomImageUrl(width = 200, height = 200) {
-  return `https://picsum.photos/${width}/${height}`;
+    if (!response.ok) {
+      throw new Error(`Pexels API request failed: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    if (data.photos && data.photos.length > 0) {
+      return data.photos[0].src.medium; 
+    } else {
+      console.warn('No images found for the given query on Pexels. Using fallback image.');
+      return 'https://picsum.photos/250/250'; 
+    }
+
+  } catch (error) {
+    console.error("Error fetching image from Pexels:", error);
+    return 'https://picsum.photos/250/250'; 
+  }
 }
-
 
 async function uploadPDF(localFilePath, manualName) {
   const bucket = storage.bucket(); 
@@ -60,70 +82,93 @@ async function addSampleData() {
     // Add Importers
     const importersRef = db.collection('importers');
     const importerNames = ["סאני", "אלקטרה", "ברימאג", "דיפלומט", "היפרטרוניקס"];
-    const importerIds = await Promise.all(importerNames.map(async (name) => {
-      const data = {
-        name: name,
-        logoUrl: getRandomImageUrl(), 
-      };
-      const docRef = await importersRef.add(data);
-      console.log(`Added importer: ${name}`);
-      return docRef.id;
-    }));
+
+    const importerIds = await Promise.all(
+      importerNames.map(async (name) => {
+        const logoUrl = await getRandomImageUrl(`importer logo ${name}`);
+        const importerData = {
+          name: name,
+          logoUrl: logoUrl,
+          createdAt: new Date(), // Add createdAt field
+        };
+        const docRef = await importersRef.add(importerData);
+        console.log(`Added importer: ${name}`);
+        return docRef.id;
+      })
+    );
 
     // Add Brands
     const brandsRef = db.collection('brands');
     const brandIds = [];
+
     for (let i = 0; i < importerIds.length; i++) {
       const importerId = importerIds[i];
+      const importerName = importerNames[i]; // Get the importer name
+
       for (let j = 1; j <= 5; j++) {
         const brandName = `מותג ${i * 5 + j}`;
+        const logoUrl = await getRandomImageUrl(`brand logo ${brandName}`);
         const brandData = {
           importerId: importerId,
+          importerName: importerName, // Add importerName
           name: brandName,
-          logoUrl: getRandomImageUrl(), // Use random image for logo
+          logoUrl: logoUrl,
+          createdAt: new Date(), // Add createdAt field
         };
         const docRef = await brandsRef.add(brandData);
         brandIds.push(docRef.id);
-        console.log(`Added brand: ${brandName} for importer: ${importerNames[i]}`);
+        console.log(`Added brand: ${brandName} for importer: ${importerName}`);
       }
     }
 
-    // Add Products
+    
     const productsRef = db.collection('products');
     const productIds = [];
+
     for (let i = 0; i < brandIds.length; i++) {
       const brandId = brandIds[i];
+      
+      const brand = await db.collection('brands').doc(brandId).get();
+      const brandName = brand.data()?.name;
+
       for (let j = 1; j <= 3; j++) {
         const productName = `מוצר ${i * 3 + j}`;
+        const imageUrl = await getRandomImageUrl(`product logo ${productName}`);
         const productData = {
           brandId: brandId,
+          brandName: brandName, 
           name: productName,
-          imageUrl: getRandomImageUrl(), // Use random image
+          imageUrl: imageUrl,
+          createdAt: new Date(), 
         };
         const docRef = await productsRef.add(productData);
         productIds.push(docRef.id);
-        console.log(`Added product: ${productName} for brand: ${i + 1}`);
+        console.log(`Added product: ${productName} for brand: ${brandName}`);
       }
     }
 
-    // Add Manuals (Manuals are now a subcollection of products)
+    // Add Manuals
     for (let i = 0; i < productIds.length; i++) {
       const productId = productIds[i];
+     
+      const product = await db.collection('products').doc(productId).get();
+      const productName = product.data()?.name; 
+
       const manualName = `מדריך למוצר ${i + 1}`;
-
-      const localPdfFilePath = `pdfExample.pdf`; // Your PDF file path
-
+      const localPdfFilePath = `pdfExample.pdf`;
       const downloadURL = await uploadPDF(localPdfFilePath, manualName);
 
       const manualData = {
+        productId: productId, 
+        productName: productName, 
         name: manualName,
-        imageUrl: getRandomImageUrl(),
         manualPdfFile: downloadURL,
+        createdAt: new Date(),
       };
 
       await db.collection('products').doc(productId).collection('manuals').add(manualData);
 
-      console.log(`Added manual: ${manualName} for product: ${i + 1}`);
+      console.log(`Added manual: ${manualName} for product: ${productName}`);
     }
 
     console.log('Sample data addition completed successfully');

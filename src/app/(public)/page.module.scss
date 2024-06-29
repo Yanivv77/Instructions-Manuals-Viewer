@@ -1,0 +1,20 @@
+.main {
+  padding: 2rem 0;
+}
+
+.Grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.Link {
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}

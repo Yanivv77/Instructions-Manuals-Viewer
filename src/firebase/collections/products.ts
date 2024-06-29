@@ -1,15 +1,8 @@
 import { db } from '../firebase.config';
 import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, query, where } from 'firebase/firestore';
 import { FirebaseError } from '../errors/FirebaseError';
-
-export interface Product {
-  id?: string;
-  brandId: string;
-  name: string;
-  description?: string;
-  imageUrl?: string;
-  category?: string;
-}
+import { Product } from '@/types';
+import { brandsAPI } from './brands';
 
 const COLLECTION_NAME = 'products';
 
@@ -46,9 +39,19 @@ export const productsAPI = {
     }
   },
 
-  add: async (data: Omit<Product, 'id'>): Promise<string> => {
+  add: async (data: Omit<Product, 'id' | 'createdAt' | 'brandName'>): Promise<string> => {
     try {
-      const docRef = await addDoc(collection(db, COLLECTION_NAME), data);
+      // Fetch the brand name
+      const brand = await brandsAPI.getById(data.brandId);
+      if (!brand) {
+        throw new FirebaseError('Brand not found', 'BRAND_NOT_FOUND'); 
+      }
+
+      const docRef = await addDoc(collection(db, COLLECTION_NAME), {
+        ...data,
+        brandName: brand.name, 
+        createdAt: new Date(),
+      });
       return docRef.id;
     } catch (error) {
       throw new FirebaseError('Failed to add product', 'ADD_PRODUCT_ERROR');

@@ -37,6 +37,7 @@ const ManualsPage: React.FC = () => {
   const [newManual, setNewManual] = useState<Omit<Manual, 'id'>>({
     name: '',
     manualPdfFile: '',
+    
   });
   const [editingManual, setEditingManual] = useState<Manual | any>(null);
   const [error, setError] = useState<string | null>(null);

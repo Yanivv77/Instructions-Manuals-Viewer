@@ -1,12 +1,17 @@
+- .dockerignore
 - .env.local
 - .gitignore
 - addAdminUser.js
+- addDatabaseData.js
+- docker-compose.yml
+- Dockerfile
 - jest.config.js
 - LICENSE
 - next-env.d.ts
 - next.config.js
 - package-lock.json
 - package.json
+- pdfExample.pdf
 - project_structure.text
 - public
   - favicon.ico
@@ -15,31 +20,44 @@
 - README.md
 - src
   - app
+    - (public)
+      - layout.module.scss
+      - layout.tsx
+      - page.module.scss
+      - page.tsx
+      - [importer_id]
+        - page.tsx
+        - [brand_id]
+          - page.tsx
+          - [product_id]
+            - page.tsx
     - admin
       - adminLayout.module.scss
-      - adminLayout.tsx
       - brands
         - page.tsx
       - form.module.scss
       - importers
         - page.tsx
+      - layout.tsx
       - manuals
         - page.tsx
       - page.module.scss
       - page.tsx
       - products
         - page.tsx
+    - api
+      - brands
+        - route.ts
+      - importers
+        - route.ts
+      - manuals
+        - route.ts
+      - products
+        - route.ts
     - layout.module.scss
     - layout.tsx
-    - page.tsx
-    - [importer_id]
-      - page.tsx
-      - [brand_id]
-        - page.tsx
-        - [product_id]
-          - page.tsx
-          - [model_id]
-            - page.tsx
+    - lib
+      - getData.ts
   - components
     - Admin
       - AdminLogin
@@ -51,7 +69,24 @@
       - GenericForm
         - GenericForm.module.scss
         - GenericForm.tsx
+      - PdfUpload
+        - PdfUpload.module.scss
+        - PdfUpload.tsx
     - Client
+      - Card
+        - Card.module.scss
+        - Card.tsx
+      - ErrorMessage
+        - ErrorMessage.tsx
+      - Footer
+        - Footer.module.scss
+        - Footer.tsx
+      - Header
+        - Header.module.scss
+        - Header.tsx
+      - LoadingSpinner
+        - LoadingSpinner.module.scss
+        - LoadingSpinner.tsx
     - Shared
       - Header.module.scss
       - Header.tsx
