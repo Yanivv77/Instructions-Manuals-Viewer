@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Instruction Manuals Viewer
 
-## Getting Started
+## Overview
+The Instruction Manuals Viewer is a web application built using Next.js 14+ designed to manage and display instruction manuals for various products. The website supports a hierarchy of importers, brands, product types, and models, with each model having associated instruction manuals provided as link URLs to PDF files.
 
-First, run the development server:
+**Live Demo:** [Instruction Manuals Viewer](https://instructions-manuals-viewer.vercel.app/)
+**Admin Panel:** [Admin Interface](https://instructions-manuals-viewer.vercel.app/admin)  
+**Admin Access:**  
+Email: `yaniv@gmail.com`  
+Password: `yaniv123`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Objective
+Build a responsive, SEO-friendly website that allows users to navigate through a hierarchy of importers, brands, and products to find specific instruction manuals in PDF format.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
+- **Frontend**: Next.js 14+, React, SCSS for styling
+- **Backend**: Next.js API routes
+- **Database**: Firebase Firestore or MongoDB
+- **Deployment**: Dockerized environment, Vercel for live deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Requirements
+- The site must support Right-to-Left (RTL) layout for Hebrew.
+- Utilize Server-Side Rendering (SSR) or Static Site Generation (SSG) for SEO purposes.
+- Ensure the website is crawlable by search engines.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Functional Specifications
+- `src/app/page.tsx`: Lists all importers. Clicking an importer navigates to its brands.
+- `src/app/[importer_id]/page.tsx`: Displays all brands under an importer. Clicking a brand navigates to its products.
+- `src/app/[importer_id]/[brand_id]/page.tsx`: Lists all products under a brand. Clicking a product navigates to its details.
+- `src/app/[importer_id]/[brand_id]/[product_id]/page.tsx`: Displays product details and a download button for the instruction manual.
 
-## Learn More
+## Features
+- **Hierarchical Navigation:** Browse manuals by importer, brand, product, and model.
+- **Detailed Product Information:** View product details, including the importer, brand, and associated manuals.
+- **Manual Downloads:** Download or view manuals as PDF files.
+- **Admin Panel:**  Manage importers, brands, products, and manuals.
 
-To learn more about Next.js, take a look at the following resources:
+1. **Prerequisites:**
+   - Install Docker Desktop or Docker Engine.
+   - Install Docker Compose.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Clone the Repository:**
+   ```bash
+   git clone 
+   cd your-repo-name
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Set Up Environment Variables
+1. Create a file named `.env` at the root of the project.
+Add your required environment variables (replace placeholders with actual values):
 
-## Deploy on Vercel
+```plaintext
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
+GOOGLE_APPLICATION_CREDENTIALS=./firebase-key.json
+other environment variables thats in env envcopy.local
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Firebase Service Account Key:
+Download your Firebase service account key file (JSON format) from the Firebase console and place it at the root of the project.
+Update the path in Dockerfile to match the name of your key file.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+3. Build and Run:
+docker-compose build
+docker-compose up
+
+Initializing Data
+
+1. Run the addAdminUser.js script:
+This script adds an admin user to your Firebase project.
+You might need to adjust the script to match your Firebase authentication setup.
+
+2. Run the addDatabaseData.js script:
+This script populates your Firestore database with sample data.
+You might need to modify this script to match your data structure and API functions.
