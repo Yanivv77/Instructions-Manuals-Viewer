@@ -21,7 +21,6 @@
 
 .sidebarWrapper {
   background-color: #ddd; 
- 
 }
 
 .content {
@@ -29,7 +28,6 @@
   background-color: #fff;
   padding: 20px;
   overflow-y: auto;
-
   @media (max-width: $breakpoint-desktop) { 
     margin-right: -220px;
   }

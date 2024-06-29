@@ -6,7 +6,7 @@ import { auth } from '@/firebase/firebase.config';
 import AdminLogin from '@/components/Admin/AdminLogin/AdminLogin';
 import AdminSidebar from '@/components/Admin/AdminSidebar/AdminSidebar';
 import Header from '@/components/Shared/Header';
-import styles from './AdminLayout.module.scss';
+import styles from './Layout.module.scss';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
